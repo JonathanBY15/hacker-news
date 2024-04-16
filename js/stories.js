@@ -137,11 +137,22 @@ async function toggleFavorite(story_id) {
 }
 
 
-// add event listener to favorite checkbox
+// add event listener to favorite checkboxes in all stories list
 $allStoriesList.on('click', '.favorite', function (evt) {
   const story_id = evt.target.id.substring(4);
   toggleFavorite(story_id);
-  // console.log(`${story_id} added/removed from favorites`);
+});
+
+// add event listener to favorite checkboxes in favorite stories list
+$favoriteStoriesList.on('click', '.favorite', function (evt) {
+  const story_id = evt.target.id.substring(4);
+  toggleFavorite(story_id);
+});
+
+// add event listener to favorite checkboxes in user stories list
+$userStoriesList.on('click', '.favorite', function (evt) {
+  const story_id = evt.target.id.substring(4);
+  toggleFavorite(story_id);
 });
 
 
