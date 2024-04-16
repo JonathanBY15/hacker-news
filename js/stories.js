@@ -53,6 +53,22 @@ function putStoriesOnPage() {
   $allStoriesList.show();
 }
 
+/** Gets list of favorite stories from server, generates their HTML, and puts on page. */
+
+function putFavoriteStoriesOnPage() {
+  console.debug("putFavoriteStoriesOnPage");
+
+  $favoriteStoriesList.empty();
+
+  // loop through all of our stories and generate HTML for them
+  for (let story of currentUser.favorites) {
+    const $story = generateStoryMarkup(story);
+    $favoriteStoriesList.append($story);
+  }
+
+  $favoriteStoriesList.show();
+}
+
 // get the data from the form, call the .addStory method, and then put that new story on the page.
 async function submitNewStory(evt) {
   console.debug("submitNewStory", evt);
