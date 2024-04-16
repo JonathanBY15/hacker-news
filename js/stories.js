@@ -26,7 +26,7 @@ function generateStoryMarkup(story) {
 
   return $(`
       <li id="${story.storyId}">
-        <input type="checkbox" id="fav-${story.storyId}" class="favorite">
+        <input type="checkbox" id="fav-${story.storyId}" class="favorite" ${checkFavorite(story)}>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -87,19 +87,6 @@ async function getStory(id) {
   }
 }
 
-// // toggle favorite
-// async function toggleFavorite(story_id) {
-//   const story = await getStory(story_id);
-
-//   if (currentUser.favorites.includes(story)) {
-//     await currentUser.removeFavorite(story);
-//     localStorage.setItem('favorites', JSON.stringify(currentUser.favorites));
-//   } else {
-//     await currentUser.addFavorite(story);
-//     localStorage.setItem('favorites', JSON.stringify(currentUser.favorites));
-//   }
-// }
-
 async function toggleFavorite(story_id) {
   try {
     const api_story = await getStory(story_id);
@@ -129,38 +116,26 @@ $allStoriesList.on('click', '.favorite', function (evt) {
 
 
 
-
-
 //retrieve favorites from local storage
 function getFavorites() {
   const favorites = JSON.parse(localStorage.getItem('favorites'));
 
-  favorites.forEach(item => {
-    const storyId = item.data.story.storyId;
-    const title = item.data.story.title;
-    // Access other properties as needed
-    console.log(`Story ID: ${storyId}, Title: ${title}`);
-  });
+  if (favorites) {
+    favorites.forEach(item => {
+      const storyId = item.storyId;
+      const title = item.title;
+      // Access other properties as needed
+      console.log(`Story ID: ${storyId}, Title: ${title}`);
+    });
+  } else {
+    console.log('No favorites found in local storage.');
+  }
 }
 
-
-
-
-
-// // add event listener to favorite checkbox
-// $allStoriesList.on('click', '.favorite', function (evt) {
-//   const story_id = evt.target.id.substring(4);
-//   const story = getStory(story_id);
-
-//   if (evt.target.checked) {
-//     currentUser.addFavorite(story);
-//     console.log(currentUser.favorites);
-//   } else {
-//     currentUser.removeFavorite(story);
-//     console.log(currentUser.favorites);
-//   }
-
-//   console.log(`evt.target: ${evt.target}`);
-//   console.log(`story_id: ${story_id}`);
-//   console.log(`story: ${story}`);
-// })
+// if story is in currentUser.favorites, add checked attribute to checkbox
+function checkFavorite(story) {
+  if (currentUser.isFavorite(story)) {
+    return 'checked';
+  }
+  return '';
+}
