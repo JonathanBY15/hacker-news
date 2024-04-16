@@ -34,6 +34,7 @@ function updateNavOnLogin() {
   $navLogOut.show();
   $navSubmit.show();
   $navFavorites.show();
+  $navMyStories.show();
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 
@@ -57,3 +58,13 @@ function navFavoritesClick(evt) {
 }
 
 $body.on("click", "#nav-favorites", navFavoritesClick);
+
+/** Show users stories when clicked on "my stories" */
+
+function navMyStoriesClick(evt) {
+  console.debug("navMyStoriesClick", evt);
+  hidePageComponents();
+  putUserStoriesOnPage();
+}
+
+$body.on("click", "#nav-myStories", navMyStoriesClick);
