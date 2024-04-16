@@ -23,6 +23,7 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+
   return $(`
       <li id="${story.storyId}">
         <input type="checkbox" id="fav-${story.storyId}" class="favorite">
@@ -72,3 +73,94 @@ async function submitNewStory(evt) {
 }
 
 $submitForm.on("submit", submitNewStory);
+
+
+
+// get Story by id
+async function getStory(id) {
+  try {
+    const story = await axios.get(`https://hack-or-snooze-v3.herokuapp.com/stories/${id}`);
+    console.log(story);
+    return story;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+// // toggle favorite
+// async function toggleFavorite(story_id) {
+//   const story = await getStory(story_id);
+
+//   if (currentUser.favorites.includes(story)) {
+//     await currentUser.removeFavorite(story);
+//     localStorage.setItem('favorites', JSON.stringify(currentUser.favorites));
+//   } else {
+//     await currentUser.addFavorite(story);
+//     localStorage.setItem('favorites', JSON.stringify(currentUser.favorites));
+//   }
+// }
+
+async function toggleFavorite(story_id) {
+  try {
+    const api_story = await getStory(story_id);
+    const story = new Story(api_story.data.story);
+
+    if (currentUser.isFavorite(story)) {
+      await currentUser.removeFavorite(story);
+    } else {
+      await currentUser.addFavorite(story);
+    }
+
+    localStorage.setItem('favorites', JSON.stringify(currentUser.favorites));
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+
+// add event listener to favorite checkbox
+$allStoriesList.on('click', '.favorite', function (evt) {
+  const story_id = evt.target.id.substring(4);
+  toggleFavorite(story_id);
+  // console.log(`${story_id} added/removed from favorites`);
+});
+
+
+
+
+
+
+
+//retrieve favorites from local storage
+function getFavorites() {
+  const favorites = JSON.parse(localStorage.getItem('favorites'));
+
+  favorites.forEach(item => {
+    const storyId = item.data.story.storyId;
+    const title = item.data.story.title;
+    // Access other properties as needed
+    console.log(`Story ID: ${storyId}, Title: ${title}`);
+  });
+}
+
+
+
+
+
+// // add event listener to favorite checkbox
+// $allStoriesList.on('click', '.favorite', function (evt) {
+//   const story_id = evt.target.id.substring(4);
+//   const story = getStory(story_id);
+
+//   if (evt.target.checked) {
+//     currentUser.addFavorite(story);
+//     console.log(currentUser.favorites);
+//   } else {
+//     currentUser.removeFavorite(story);
+//     console.log(currentUser.favorites);
+//   }
+
+//   console.log(`evt.target: ${evt.target}`);
+//   console.log(`story_id: ${story_id}`);
+//   console.log(`story: ${story}`);
+// })

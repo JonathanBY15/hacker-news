@@ -116,59 +116,51 @@ function updateUIOnUserLogin() {
   updateNavOnLogin();
 }
 
-// Add favorite
-async function addFavorite(evt) {
-  const storyId = evt.target.closest('LI').id;
-  const url = `${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`;
+// // Add favorite
+// async function addFavorite(evt) {
+//   const storyId = evt.target.closest('LI').id;
+//   const url = `${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`;
 
-  try {
-    const response = await axios.post(url, {
-      token: currentUser.loginToken
-    })
+//   try {
+//     const response = await axios.post(url, {
+//       token: currentUser.loginToken
+//     });
 
-    // Update local storage to mark the story as checked
-    localStorage.setItem(`favorite_${storyId}`, 'checked');
+//   } catch (error) {
+//     console.error('Error:', error);
+//   }
 
-    console.log('checked');
-    console.log(currentUser.favorites);
+// }
 
-  } catch (error) {
-    console.error('Error:', error);
-  }
+// // Remove favorite
+// async function removeFavorite(evt) {
+//   const storyId = evt.target.closest('LI').id;
+//   const url = `${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`;
 
-}
+//   const data = {
+//     token: currentUser.loginToken
+//   };
 
-// Remove favorite
-async function removeFavorite(evt) {
-  const storyId = evt.target.closest('LI').id;
-  const url = `${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`;
+//   try {
+//     const response = await axios.delete(url, {
+//       data: data
+//     });
 
-  const data = {
-    token: currentUser.loginToken
-  };
+//   } catch (error) {
+//     console.error('Error:', error);
+//   }
 
-  try {
-    const response = await axios.delete(url, {
-      data: data
-    });
+// }
 
-    // Update local storage to mark the story as unchecked
-    localStorage.removeItem(`favorite_${storyId}`);
+// // add event listener to favorite checkbox
+// $allStoriesList.on('click', '.favorite', function (evt) {
+//   if (evt.target.checked) {
+//     addFavorite(evt);
+//     console.log(currentUser.favorites);
+//   } else {
+//     removeFavorite(evt);
+//     console.log(currentUser.favorites);
+//   }
+// })
 
-    console.log('unchecked');
-    console.log(currentUser.favorites);
 
-  } catch (error) {
-    console.error('Error:', error);
-  }
-
-}
-
-// add event listener to favorite checkbox
-$allStoriesList.on('click', '.favorite', function (evt) {
-  if (evt.target.checked) {
-    addFavorite(evt);
-  } else {
-    removeFavorite(evt);
-  }
-})
