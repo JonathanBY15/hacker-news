@@ -120,9 +120,13 @@ async function submitNewStory(evt) {
   const story = await storyList.addStory(currentUser, newStory);
 
   const $story = generateStoryMarkup(story);
-  $allStoriesList.prepend($story);
+  $allStoriesList.prepend($story);///////////////////////
 
   $submitForm.trigger("reset");
+
+  hidePageComponents();
+  $submitForm.show();
+  $allStoriesList.show();
 }
 
 $submitForm.on("submit", submitNewStory);

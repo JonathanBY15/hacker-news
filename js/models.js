@@ -101,6 +101,9 @@ class StoryList {
     }
   }
 
+  removeStoryById(storyId) {
+    this.stories = this.stories.filter(story => story.storyId !== storyId);
+  }
 }
 
 
@@ -269,5 +272,10 @@ class User {
       method: "DELETE",
       data: { token },
     });
+    // remove story from StoryList
+
+    this.ownStories = this.ownStories.filter(story => story.storyId !== storyId);
+    this.favorites = this.favorites.filter(story => story.storyId !== storyId);
+    storyList.removeStoryById(storyId);
   }
 }
