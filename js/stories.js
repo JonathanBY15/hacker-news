@@ -20,9 +20,24 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-  // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+
+  // if story belongs to currentUser
+  if (currentUser.ownStories.includes(story)) {
+    return $(`
+      <li id="${story.storyId}">
+        <i class="fa-solid fa-trash-can"></i>
+        <input type="checkbox" id="fav-${story.storyId}" class="favorite" ${checkFavorite(story)}>
+        <a href="${story.url}" target="a_blank" class="story-link">
+          ${story.title}
+        </a>
+        <small class="story-hostname">(${hostName})</small>
+        <small class="story-author">by ${story.author}</small>
+        <small class="story-user">posted by ${story.username}</small>
+      </li>
+    `);
+  }
 
   return $(`
       <li id="${story.storyId}">
@@ -74,12 +89,17 @@ function putFavoriteStoriesOnPage() {
 function putUserStoriesOnPage() {
   console.debug("putUserStoriesOnPage");
 
-  $userStoriesList.empty();
+  if (currentUser.ownStories.length === 0) {
+    $userStoriesList.append("<h5>No stories added by user yet!</h5>");
+  }
+  else {
+    $userStoriesList.empty();
 
-  // loop through all of our stories and generate HTML for them
-  for (let story of currentUser.ownStories) {
-    const $story = generateStoryMarkup(story);
-    $userStoriesList.append($story);
+    // loop through all of our stories and generate HTML for them
+    for (let story of currentUser.ownStories) {
+      const $story = generateStoryMarkup(story);
+      $userStoriesList.append($story);
+    }
   }
 
   $userStoriesList.show();
