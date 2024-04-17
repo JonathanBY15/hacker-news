@@ -259,4 +259,15 @@ class User {
   isFavorite(story) {
     return this.favorites.some(s => (s.storyId === story.storyId));
   }
+
+
+  // function to delete a story
+  async deleteStory(storyId) {
+    const token = this.loginToken;
+    await axios({
+      url: `${BASE_URL}/stories/${storyId}`,
+      method: "DELETE",
+      data: { token },
+    });
+  }
 }

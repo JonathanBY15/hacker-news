@@ -90,6 +90,7 @@ function putUserStoriesOnPage() {
   console.debug("putUserStoriesOnPage");
 
   if (currentUser.ownStories.length === 0) {
+    $userStoriesList.empty();
     $userStoriesList.append("<h5>No stories added by user yet!</h5>");
   }
   else {
@@ -202,3 +203,13 @@ function checkFavorite(story) {
   }
   return '';
 }
+
+// add event listener to delete story icon
+$userStoriesList.on('click', '.fa-trash-can', function (evt) {
+  const storyId = evt.target.parentElement.id;
+  currentUser.deleteStory(storyId);
+
+  // remove story from DOM
+  evt.target.parentElement.remove();
+  console.log('Story deleted');
+});
