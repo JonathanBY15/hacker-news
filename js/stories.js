@@ -73,16 +73,22 @@ function putStoriesOnPage() {
 function putFavoriteStoriesOnPage() {
   console.debug("putFavoriteStoriesOnPage");
 
-  $favoriteStoriesList.empty();
+  if (currentUser.favorites.length === 0) {
+    $favoriteStoriesList.empty();
+    $favoriteStoriesList.append("<h5>No favorites added!</h5>");
+  } else {
+    $favoriteStoriesList.empty();
 
-  // loop through all of our stories and generate HTML for them
-  for (let story of currentUser.favorites) {
-    const $story = generateStoryMarkup(story);
-    $favoriteStoriesList.append($story);
+    // loop through favorited stories and generate HTML
+    for (let story of currentUser.favorites) {
+      const $story = generateStoryMarkup(story);
+      $favoriteStoriesList.append($story);
+    }
   }
 
   $favoriteStoriesList.show();
 }
+
 
 /** Gets list of users stories from server, generates their HTML, and puts on page. */
 
