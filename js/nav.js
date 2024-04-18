@@ -69,3 +69,35 @@ function navMyStoriesClick(evt) {
 }
 
 $body.on("click", "#nav-myStories", navMyStoriesClick);
+
+
+
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const formattedDate = date.toISOString().split('T')[0];
+  return formattedDate;
+}
+
+function navUserProfileClick(evt) {
+  console.debug("navUserProfileClick", evt);
+  // User Profile Info
+  // Name: bob
+  // Username: bobaaa
+  // Account Created: 2024-04-08
+  // show name, username, and date
+  return $(`
+      <h4>User Profile Info</h4>
+      <p>Name: ${currentUser.name}</p>
+      <p>Username: ${currentUser.username}</p>
+      <p>Account Created: ${formatDate(currentUser.createdAt)}</p>
+    `);
+}
+
+$navUserProfile.on("click", function () {
+  const userProfHtml = navUserProfileClick();
+  $userProfile.empty();
+  $userProfile.append(userProfHtml);
+  hidePageComponents();
+  $userProfile.show();
+});
