@@ -70,9 +70,6 @@ function navMyStoriesClick(evt) {
 
 $body.on("click", "#nav-myStories", navMyStoriesClick);
 
-
-
-
 function formatDate(dateString) {
   const date = new Date(dateString);
   const formattedDate = date.toISOString().split('T')[0];

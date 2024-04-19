@@ -28,7 +28,10 @@ function generateStoryMarkup(story) {
     return $(`
       <li id="${story.storyId}">
         <i class="fa-solid fa-trash-can"></i>
-        <input type="checkbox" id="fav-${story.storyId}" class="favorite" ${checkFavorite(story)}>
+        
+        <i class="${checkFavorite(story)} fa-star favorite" id="fav-${story.storyId}"></i>
+
+
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -41,7 +44,10 @@ function generateStoryMarkup(story) {
 
   return $(`
       <li id="${story.storyId}">
-        <input type="checkbox" id="fav-${story.storyId}" class="favorite" ${checkFavorite(story)}>
+        
+        <i class="${checkFavorite(story)} fa-star favorite" id="fav-${story.storyId}"></i>
+
+
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -88,7 +94,6 @@ function putFavoriteStoriesOnPage() {
 
   $favoriteStoriesList.show();
 }
-
 
 /** Gets list of users stories from server, generates their HTML, and puts on page. */
 
@@ -137,8 +142,6 @@ async function submitNewStory(evt) {
 
 $submitForm.on("submit", submitNewStory);
 
-
-
 // get Story by id
 async function getStory(id) {
   try {
@@ -157,8 +160,12 @@ async function toggleFavorite(story_id) {
 
     if (currentUser.isFavorite(story)) {
       await currentUser.removeFavorite(story);
+      // change favorite icon to regular star
+      $(`#fav-${story_id}`).removeClass('fa-solid').addClass('fa-regular');
     } else {
       await currentUser.addFavorite(story);
+      // change favorite icon to solid star
+      $(`#fav-${story_id}`).removeClass('fa-regular').addClass('fa-solid');
     }
 
     localStorage.setItem('favorites', JSON.stringify(currentUser.favorites));
@@ -166,7 +173,6 @@ async function toggleFavorite(story_id) {
     console.error('Error:', error);
   }
 }
-
 
 // add event listener to favorite checkboxes in all stories list
 $allStoriesList.on('click', '.favorite', function (evt) {
@@ -186,10 +192,6 @@ $userStoriesList.on('click', '.favorite', function (evt) {
   toggleFavorite(story_id);
 });
 
-
-
-
-
 //retrieve favorites from local storage
 function getFavorites() {
   const favorites = JSON.parse(localStorage.getItem('favorites'));
@@ -206,12 +208,12 @@ function getFavorites() {
   }
 }
 
-// if story is in currentUser.favorites, add checked attribute to checkbox
+// if story is in currentUser.favorites, change star icon to solid star
 function checkFavorite(story) {
   if (currentUser.isFavorite(story)) {
-    return 'checked';
+    return 'fa-solid';
   }
-  return '';
+  return 'fa-regular';
 }
 
 // add event listener to delete story icon
