@@ -42,7 +42,7 @@ i {
   cursor: pointer;
 }
 
-i:hover {
+.fa-trash-can:hover {
   color: red;
 }
 

@@ -153,22 +153,67 @@ async function getStory(id) {
   }
 }
 
-async function toggleFavorite(story_id) {
+// async function toggleFavorite(story_id) {
+//   try {
+//     const api_story = await getStory(story_id);
+//     const story = new Story(api_story.data.story);
+//     const $icon = $(`#fav-${story_id}`);
+
+//     const parentElement = $icon.parent().parent()[0];
+//     console.log(`parent element: ${parentElement.id}`);
+
+//     if (currentUser.isFavorite(story)) {
+//       await currentUser.removeFavorite(story);
+
+//       // change favorite icon to regular star
+//       console.log(`Removed favorite: ${story_id}`);
+//       $icon.removeClass('fa-solid').addClass('fa-regular');
+
+//     } else {
+//       await currentUser.addFavorite(story);
+//       // change favorite icon to solid star
+//       console.log(`Added favorite: ${story_id}`);
+//       $icon.removeClass('fa-regular').addClass('fa-solid');
+//     }
+
+//     localStorage.setItem('favorites', JSON.stringify(currentUser.favorites));
+//   } catch (error) {
+//     console.error('Error:', error);
+//   }
+// }
+
+// copy of toggleFavorite function that takes an additional parameter to determine which list to update
+async function toggleFavorite(story_id, list) {
   try {
     const api_story = await getStory(story_id);
     const story = new Story(api_story.data.story);
+    const $icon = $(`#fav-${story_id}`);
+
+    const parentElement = $icon.parent().parent()[0];
+    console.log(`parent element: ${parentElement.id}`);
 
     if (currentUser.isFavorite(story)) {
       await currentUser.removeFavorite(story);
+
       // change favorite icon to regular star
-      $(`#fav-${story_id}`).removeClass('fa-solid').addClass('fa-regular');
+      console.log(`Removed favorite: ${story_id}`);
+      $icon.removeClass('fa-solid').addClass('fa-regular');
+
     } else {
       await currentUser.addFavorite(story);
       // change favorite icon to solid star
-      $(`#fav-${story_id}`).removeClass('fa-regular').addClass('fa-solid');
+      console.log(`Added favorite: ${story_id}`);
+      $icon.removeClass('fa-regular').addClass('fa-solid');
     }
 
     localStorage.setItem('favorites', JSON.stringify(currentUser.favorites));
+
+    // update favorite stories list
+    if (list === 'favorite') {
+      putFavoriteStoriesOnPage();
+    } else if (list === 'user') {
+      putUserStoriesOnPage();
+    }
   } catch (error) {
     console.error('Error:', error);
   }
@@ -177,40 +222,25 @@ async function toggleFavorite(story_id) {
 // add event listener to favorite checkboxes in all stories list
 $allStoriesList.on('click', '.favorite', function (evt) {
   const story_id = evt.target.id.substring(4);
-  toggleFavorite(story_id);
+  toggleFavorite(story_id, 'all');
 });
 
 // add event listener to favorite checkboxes in favorite stories list
 $favoriteStoriesList.on('click', '.favorite', function (evt) {
   const story_id = evt.target.id.substring(4);
-  toggleFavorite(story_id);
+  toggleFavorite(story_id, 'favorite');
 });
 
 // add event listener to favorite checkboxes in user stories list
 $userStoriesList.on('click', '.favorite', function (evt) {
   const story_id = evt.target.id.substring(4);
-  toggleFavorite(story_id);
+  toggleFavorite(story_id, 'user');
 });
-
-//retrieve favorites from local storage
-function getFavorites() {
-  const favorites = JSON.parse(localStorage.getItem('favorites'));
-
-  if (favorites) {
-    favorites.forEach(item => {
-      const storyId = item.storyId;
-      const title = item.title;
-      // Access other properties as needed
-      console.log(`Story ID: ${storyId}, Title: ${title}`);
-    });
-  } else {
-    console.log('No favorites found in local storage.');
-  }
-}
 
 // if story is in currentUser.favorites, change star icon to solid star
 function checkFavorite(story) {
   if (currentUser.isFavorite(story)) {
+    // return 'fa-solid';
     return 'fa-solid';
   }
   return 'fa-regular';
