@@ -3,6 +3,7 @@
 body {
   font-family: Arimo, sans-serif;
   margin: 8px 7.5vw;
+  background-color: #9BBAE7;
 }
 
 h1 {
@@ -38,6 +39,7 @@ a:hover {
   flex-direction: column;
   align-self: center;
   background-color: #f6f6ef;
+  box-shadow: #B8B4DC 0px 100px 60px -12px;
 }
 
 .hidden {
@@ -53,7 +55,7 @@ form {
   margin: 8px 18px 0;
 }
 
-form > * {
+form>* {
   margin: 10px 0;
 }
 
@@ -80,7 +82,7 @@ form input:focus {
   box-shadow: 0 0 4px 1px darkgray;
 }
 
-form > button {
+form>button {
   width: 4rem;
   margin: 5px 0 15px 65px;
   border: none;
@@ -93,11 +95,11 @@ form > button {
   transition: all 0.15s;
 }
 
-form > button:hover {
+form>button:hover {
   background-color: dimgray;
 }
 
-form > hr {
+form>hr {
   margin: 0;
   border: 1px solid lightgray;
 }

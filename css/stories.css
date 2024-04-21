@@ -31,11 +31,16 @@
 }
 
 .story-author {
-  margin-left: 2em;
+  margin-left: 20px;
+  display: block;
+  color: #39801C;
+  font-weight: bold;
 }
 
 .story-user {
+  margin-left: 20px;
   display: block;
+  color: #F4A336;
 }
 
 i {
@@ -48,4 +53,13 @@ i {
 
 ul {
   list-style-type: none;
+}
+
+.stories-list li::after {
+  content: "";
+  display: block;
+  margin-top: 10px;
+  /* Adjust as needed */
+  border-top: 1px solid #ccc;
+  /* Adjust the color and style as needed */
 }
